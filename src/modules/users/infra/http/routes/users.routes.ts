@@ -5,6 +5,7 @@ import uploadConfig from '@config/upload';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface User {
   name: string;
@@ -14,23 +15,21 @@ interface User {
 const usersRouter = Router();
 const upload = multer(uploadConfig);
 
+
 usersRouter.post('/', async (request, response) => {
-  try {
-    const { name, email, password } = request.body;
-    const createUser = new CreateUserService();
+  const usersRepository = new UsersRepository();
+  const { name, email, password } = request.body;
+  const createUser = new CreateUserService(usersRepository);
 
-    const user: User = await createUser.execute({
-      name,
-      email,
-      password,
-    });
+  const user: User = await createUser.execute({
+    name,
+    email,
+    password,
+  });
 
-    delete user.password;
+  delete user.password;
 
-    return response.json(user);
-  } catch (error) {
-    return response.status(400).json({ error: error.message });
-  }
+  return response.json(user);
 });
 
 usersRouter.patch(
@@ -38,7 +37,8 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request, response) => {
-    const updateUserAvatar = new UpdateUserAvatarService();
+    const usersRepository = new UsersRepository();
+    const updateUserAvatar = new UpdateUserAvatarService(usersRepository);
 
     const user = await updateUserAvatar.execute({
       user_id: request.user.id,
