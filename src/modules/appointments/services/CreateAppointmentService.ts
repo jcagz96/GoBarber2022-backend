@@ -1,15 +1,15 @@
 import { startOfHour } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
-import AppError from '@shared/errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointment';
-import AppointmentRepository from '../infra/typeorm/repositories/AppointmentsRepository';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import "reflect-metadata";
 import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
   provider_id: string;
   date: Date;
 }
+import "reflect-metadata";
 
 @injectable()
 class CreateAppointmentService {
