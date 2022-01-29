@@ -8,3 +8,5 @@ ormconfig.json
 .vscode
 
 .env
+
+coverage
