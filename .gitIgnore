@@ -10,3 +10,5 @@ ormconfig.json
 .env
 
 coverage
+
+README.md
