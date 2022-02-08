@@ -4,37 +4,34 @@ import User from '../../infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import { v4 as uuid } from 'uuid';
-import IUserTokenRepository from '../IUserTokenRepository';
+import IUserTokensRepository from '../IUserTokensRepository';
+import UserToken from '@modules/users/infra/typeorm/entities/UserToken';
 
-class UserTokenRepository implements IUserTokenRepository {
-
-  private users: User[] = [];
+class FakeUserTokensRepository implements IUserTokensRepository {
 
 
-  public async findById(id: string): Promise<User | undefined> {
-    const user = this.users.find(user => user.id === id);
-    return user;
+  private userTokens: UserToken[] = [];
+
+  public async generate(user_id: string): Promise<UserToken> {
+    const userToken = new UserToken;
+    userToken.id = uuid();
+    userToken.token = uuid();
+    userToken.user_id = user_id;
+    userToken.created_at = new Date();
+    userToken.updated_at = new Date();
+
+    this.userTokens.push(userToken);
+
+    return userToken;
   }
-  public async findByEmail(email: string): Promise<User | undefined> {
-    const user = this.users.find(user => user.email === email);
-    return user;
-  }
-  public async create(userData: ICreateUserDTO): Promise<User> {
-    const user = new User;
 
-    user.id = uuid();
-    user.name = userData.name;
-    user.email = userData.email;
-    user.password = userData.password;
+  public async findByToken(token: string): Promise<UserToken | undefined> {
+    const userToken = this.userTokens.find(findToken => findToken.token === token);
 
-    this.users.push(user);
-    return user;
+    return userToken;
   }
-  public async save(user: User): Promise<User> {
-    const findIndex = this.users.findIndex(findUser => findUser.id = user.id);
-    this.users[findIndex] = user;
-    return user;
-  }
+
+
 }
 
-export default UserTokenRepository;
+export default FakeUserTokensRepository;
