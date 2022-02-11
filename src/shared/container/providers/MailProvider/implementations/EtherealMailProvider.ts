@@ -1,5 +1,6 @@
 import IEmailProvider from "../models/IEmailProvider";
 import nodemailer, { Transporter } from 'nodemailer';
+import ISendMailDTO from "../dtos/ISendMailDTO";
 
 interface IMessage {
   to: string;
@@ -25,12 +26,18 @@ export default class EtherealMailProvider implements IEmailProvider {
 
   }
 
-  public async sendEmail(to: string, body: string): Promise<void> {
+  public async sendEmail({ to, from, subject, templateData }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
-      from: 'Equipa GoBarber <equipa@gobarber.com>',
-      to,
-      subject: 'Recuperação de senha',
-      text: body,
+      from: {
+        name: from?.name || 'Equipa GoBarber',
+        address: from?.email || 'equipa@gobarber.com',
+      },
+      to: {
+        name: to.name,
+        address: to.email
+      },
+      subject,
+      text: 'Teste',
     });
 
     console.log('Message sent: %s', message.messageId);
