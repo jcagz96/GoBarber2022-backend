@@ -9,7 +9,7 @@ import IStorageProvider from './StorageProvider/models/IStorageProvider';
 
 container.registerSingleton<IStorageProvider>('StorageProvider', DiskStorageProvider);
 
-container.registerInstance<IMailProvider>('MailProvider', new EtherealMailProvider());
-
 container.registerSingleton<IMailTemplateProvider>('MailTemplateProvider', HandlebarsMailTemplateProvider);
+
+container.registerInstance<IMailProvider>('MailProvider', container.resolve(EtherealMailProvider));
 
