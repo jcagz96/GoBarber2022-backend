@@ -2,10 +2,17 @@ import CreateAppointmentService from './CreateAppointmentService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import AppError from '@shared/errors/AppError';
 
+let fakeAppointmentsRepository: FakeAppointmentsRepository;
+let createAppoinment: CreateAppointmentService;
+
 describe('CreateAppoinment', () => {
+
+  beforeEach(() => {
+    fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository);
+  });
+
   it('should be able to create a new appointment', async () => {
-    const fakeAppointmentsRepository = new FakeAppointmentsRepository();
-    const createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository);
 
     const appointment = await createAppoinment.execute({
       date: new Date(),
@@ -17,8 +24,7 @@ describe('CreateAppoinment', () => {
   });
 
   it('should be able to create a new appointment', async () => {
-    const fakeAppointmentsRepository = new FakeAppointmentsRepository();
-    const createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository);
+
 
     const appointmentDate = new Date();
 
