@@ -3,7 +3,7 @@ import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
-import IHashProvider from '../providers/HashProvider/modules/IHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   name: string;

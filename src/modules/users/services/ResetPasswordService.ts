@@ -4,7 +4,7 @@ import { injectable, inject } from 'tsyringe';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IEmailProvider';
 import AppError from '@shared/errors/AppError';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
-import IHashProvider from '../providers/HashProvider/modules/IHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import { isAfter, addHours } from 'date-fns';
 
 interface IRequest {

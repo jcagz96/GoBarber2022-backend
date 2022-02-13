@@ -9,7 +9,7 @@ import IStorageProvider from '@shared/container/providers/StorageProvider/models
 
 interface IRequest {
   user_id: string;
-  avatarFilename: string;
+  avatarFilename: string | undefined;
 }
 
 @injectable()

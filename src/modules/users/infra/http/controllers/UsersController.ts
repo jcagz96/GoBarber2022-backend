@@ -26,7 +26,4 @@ export default class UsersController {
       updated_at: user.updated_at
     });
   }
-  public async update(request: Request, response: Response): Promise<void> {
-
-  }
 }
