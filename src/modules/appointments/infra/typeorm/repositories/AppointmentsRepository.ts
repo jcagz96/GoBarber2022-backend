@@ -5,6 +5,7 @@ import IAppointmentsRepository from '@modules/appointments/repositories/IAppoint
 import Appointment from '../entities/Appointment';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
 class AppointmentRepository implements IAppointmentsRepository {
   private ormRepository: Repository<Appointment>;
@@ -28,13 +29,28 @@ class AppointmentRepository implements IAppointmentsRepository {
   }
 
   public async findAllInMonthFromProvider({ provider_id, month, year }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
-    const parsedMonth = String(month).padStart(2, '0'); // if month has nos two digits it will put a 0 at left
+    const parsedMonth = String(month).padStart(2, '0'); // if month has not two digits it will put a 0 at left
 
     const appointments = await this.ormRepository.find({
       where: {
         provider_id,
         date: Raw(dateFieldName =>
           `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`
+        )
+      },
+    });
+    return appointments;
+  }
+
+  public async findAllInDayFromProvider({ provider_id, day, month, year }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+    const parsedDay = String(day).padStart(2, '0'); // if day has not two digits it will put a 0 at left
+    const parsedMonth = String(month).padStart(2, '0'); // if month has not two digits it will put a 0 at left
+
+    const appointments = await this.ormRepository.find({
+      where: {
+        provider_id,
+        date: Raw(dateFieldName =>
+          `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`
         )
       },
     });
