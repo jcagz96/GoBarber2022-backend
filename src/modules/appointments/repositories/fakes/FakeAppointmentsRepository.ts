@@ -7,16 +7,17 @@ import { isEqual, getMonth, getDate, getYear } from 'date-fns';
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
-class FakeAppointmentRepository implements IAppointmentsRepository {
+class FakeAppointmentsRepository implements IAppointmentsRepository {
 
   private appointments: Appointment[] = [];
 
-  public async create({ date, provider_id }: ICreateAppointmentDTO): Promise<Appointment> {
+  public async create({ date, provider_id, user_id }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment();
 
     appointment.id = uuid();
     appointment.date = date;
     appointment.provider_id = provider_id;
+    appointment.user_id = user_id;
 
     this.appointments.push(appointment);
     return appointment;
@@ -49,4 +50,4 @@ class FakeAppointmentRepository implements IAppointmentsRepository {
 
 }
 
-export default FakeAppointmentRepository;
+export default FakeAppointmentsRepository;
