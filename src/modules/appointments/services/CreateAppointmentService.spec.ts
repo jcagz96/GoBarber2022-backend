@@ -2,15 +2,18 @@ import CreateAppointmentService from './CreateAppointmentService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import AppError from '@shared/errors/AppError';
 import { addDays, getYear, addYears } from 'date-fns';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let createAppoinment: CreateAppointmentService;
 
 describe('CreateAppoinment', () => {
 
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
-    createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository);
+    fakeNotificationsRepository = new FakeNotificationsRepository();
+    createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository, fakeNotificationsRepository);
   });
 
   it('should be able to create a new appointment', async () => {
