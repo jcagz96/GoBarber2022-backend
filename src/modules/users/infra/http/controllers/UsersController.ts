@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import { container } from 'tsyringe';
 import User from '../../typeorm/entities/User';
+import { instanceToPlain } from 'class-transformer';
 
 export default class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -16,14 +17,6 @@ export default class UsersController {
       password,
     });
 
-    // delete user.password;
-
-    return response.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at
-    });
+    return response.json({ user: instanceToPlain(user) });
   }
 }

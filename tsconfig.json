@@ -23,6 +23,6 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "useUnknownInCatchVariables": false,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }

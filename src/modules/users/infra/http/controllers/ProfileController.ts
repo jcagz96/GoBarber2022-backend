@@ -5,6 +5,7 @@ import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
 import { container } from 'tsyringe';
 import User from '../../typeorm/entities/User';
+import { instanceToPlain } from 'class-transformer';
 
 export default class ProfileController {
 
@@ -15,14 +16,8 @@ export default class ProfileController {
 
     const user = await showProfile.execute({ user_id });
 
-    return response.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      updated_at: user.updated_at
-    });
+
+    return response.json({ user: instanceToPlain(user) });
 
   }
 
@@ -39,15 +34,6 @@ export default class ProfileController {
       password,
     });
 
-    // delete user.password;
-
-    return response.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      updated_at: user.updated_at
-    });
+    return response.json({ user: instanceToPlain(user) });
   }
 }
