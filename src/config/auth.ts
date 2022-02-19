@@ -1,6 +1,14 @@
+import 'dotenv/config';
+interface IAuthConfig {
+  jwt: {
+    secret: string;
+    expiresIn: string | number;
+  }
+}
+
 export default {
   jwt: {
-    secret: String(process.env.APP_SECRET),
-    expiresIn: String(process.env.AUTH_EXPIRES_IN_TOKEN),
+    secret: process.env.APP_SECRET,
+    expiresIn: process.env.AUTH_EXPIRES_IN_TOKEN,
   },
-};
+} as IAuthConfig;
