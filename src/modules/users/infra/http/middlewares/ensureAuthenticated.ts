@@ -29,7 +29,6 @@ export default function ensureAuthenticated(
 
     request.user = { id: sub }; // similiar to override a type
 
-    console.log(decoded);
     return next();
   } catch {
     throw new AppError('Invalid JWT token', 401);

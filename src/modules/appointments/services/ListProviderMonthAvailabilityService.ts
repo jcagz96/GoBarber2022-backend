@@ -46,8 +46,6 @@ class ListProviderMonthAvailabilityService {
         return getDate(appointment.date) === day;
       });
 
-      /*       console.log(`\n : ${appointmentInDay}`)
-            console.log(`\n {available: ${appointmentInDay.length}, day: ${day}}`) */
 
       return {
         day,
