@@ -3,9 +3,11 @@ import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRe
 import AppError from '@shared/errors/AppError';
 import { addDays, getYear, addYears } from 'date-fns';
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let createAppoinment: CreateAppointmentService;
 
 describe('CreateAppoinment', () => {
@@ -13,7 +15,8 @@ describe('CreateAppoinment', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
-    createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository, fakeNotificationsRepository);
+    fakeCacheProvider = new FakeCacheProvider();
+    createAppoinment = new CreateAppointmentService(fakeAppointmentsRepository, fakeNotificationsRepository, fakeCacheProvider);
   });
 
   it('should be able to create a new appointment', async () => {

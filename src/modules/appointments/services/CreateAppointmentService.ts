@@ -5,6 +5,7 @@ import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 interface IRequest {
   provider_id: string;
@@ -20,14 +21,19 @@ class CreateAppointmentService {
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
     @inject('NotificationsRepository')
-    private notificationsRepository: INotificationsRepository
-  ) {
-  }
-
+    private notificationsRepository: INotificationsRepository,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
+  ) { }
 
   public async execute({ date, provider_id, user_id }: IRequest): Promise<Appointment> {
 
     const appointmentDate = startOfHour(date);
+
+    const cacheKey = `provider-appointments:${provider_id}-${format(
+      appointmentDate,
+      'yyyy-M-d',
+    )}`;
 
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError("You can't book an appointment on past date");
@@ -61,6 +67,8 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `Novo agendamento para dia ${dateFormatted}h`
     })
+
+    await this.cacheProvider.invalidate(cacheKey);
 
     return appointment;
   }
