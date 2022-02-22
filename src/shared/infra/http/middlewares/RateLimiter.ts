@@ -5,10 +5,6 @@ import redis from 'redis';
 import Redis, { Redis as RedisClient } from 'ioredis';
 import cacheConfig from '@config/cache';
 
-
-/* const redisClient = redis.createClient({
-  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
-}) */
 const redisClient = new Redis(cacheConfig.config.redis);
 
 const limiter = new RateLimiterRedis({
