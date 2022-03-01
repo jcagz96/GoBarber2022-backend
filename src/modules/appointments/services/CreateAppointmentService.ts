@@ -47,6 +47,11 @@ class CreateAppointmentService {
       throw new AppError("You can only book appointments between 8am and 5pm");
     }
 
+    /*     if (appointmentDate.getDay() === 6 || appointmentDate.getDay() === 0) {
+          throw new AppError("You can't book at weekend'");
+        } */
+
+
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
       provider_id

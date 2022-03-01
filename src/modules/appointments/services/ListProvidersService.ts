@@ -3,6 +3,7 @@ import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { instanceToPlain } from 'class-transformer';
 
 interface IRequest {
   user_id: string;
@@ -26,7 +27,7 @@ class ListProvidersService {
     if (!users) {
       users = await this.usersRepository.findAllProviders({ except_user_id: user_id });
 
-      await this.cacheProvider.save(`providers-list:${user_id}`, users);
+      await this.cacheProvider.save(`providers-list:${user_id}`, instanceToPlain(users));
     }
     return users;
   }
