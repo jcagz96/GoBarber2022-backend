@@ -8,7 +8,7 @@ import routes from './routes';
 import { errors } from 'celebrate';
 import rateLimiter from './middlewares/RateLimiter';
 import httpRequestLogger from './middlewares/httpMiddleware';
-import Logger from '../../../logger';
+import Logger from './../logger';
 
 import '@shared/infra/typeorm';
 import '@shared/container';

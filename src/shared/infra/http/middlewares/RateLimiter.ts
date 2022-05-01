@@ -4,7 +4,7 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 import redis from 'redis';
 import Redis, { Redis as RedisClient } from 'ioredis';
 import cacheConfig from '@config/cache';
-import Logger from "logger";
+import Logger from "@shared/infra/logger";
 
 
 const redisClient = new Redis(cacheConfig.config.redis);
