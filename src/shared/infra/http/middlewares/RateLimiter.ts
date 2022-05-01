@@ -4,6 +4,8 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 import redis from 'redis';
 import Redis, { Redis as RedisClient } from 'ioredis';
 import cacheConfig from '@config/cache';
+import Logger from "logger";
+
 
 const redisClient = new Redis(cacheConfig.config.redis);
 
@@ -19,6 +21,7 @@ export default async function rateLimiter(request: Request, response: Response, 
     await limiter.consume(request.ip);
     return next();
   } catch (error) {
-    throw new AppError('Too many Request', 429);
+    Logger.warn(`Too many Requests. ${error} : 429`);
+    throw new AppError('Too many Requests', 429);
   }
 }
