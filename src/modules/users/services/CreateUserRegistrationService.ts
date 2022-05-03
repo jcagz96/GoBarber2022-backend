@@ -6,6 +6,7 @@ import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
   user_id: string;
+  device_id: string;
   registrationToken: string;
   enabled: boolean;
 }
@@ -17,11 +18,22 @@ class CreateUserRegistrationService {
     private usersRegistrationRepository: IUserRegistrationTokensRepository,
   ) { }
 
-  public async execute({ user_id, registrationToken, enabled }: IRequest): Promise<UserRegistrationToken> {
+  public async execute({ user_id, device_id, registrationToken, enabled }: IRequest): Promise<UserRegistrationToken> {
 
-    const user = this.usersRegistrationRepository.create(user_id, registrationToken, enabled);
 
-    return user;
+    const userPushNotificationTokenExists = await this.usersRegistrationRepository.findByUserAndDevice(user_id, device_id);
+    var userPushNotificationToken;
+    if (!userPushNotificationTokenExists) {
+      userPushNotificationToken = this.usersRegistrationRepository.create(user_id, device_id, registrationToken, enabled);
+    }
+    else {
+      userPushNotificationTokenExists.registrationToken = registrationToken;
+      userPushNotificationTokenExists.enabled = enabled;
+
+      userPushNotificationToken = this.usersRegistrationRepository.save(userPushNotificationTokenExists);
+    }
+
+    return userPushNotificationToken;
   }
 }
 

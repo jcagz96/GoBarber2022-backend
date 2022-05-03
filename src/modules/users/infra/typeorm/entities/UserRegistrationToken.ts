@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Generated,
+  Unique,
 } from 'typeorm';
 
 @Entity('user_push-notifications')
@@ -20,6 +21,9 @@ class UserRegistrationToken {
 
   @Column()
   user_id: string;
+
+  @Column({ unique: true })
+  device_id: string;
 
   @CreateDateColumn()
   created_at: Date;

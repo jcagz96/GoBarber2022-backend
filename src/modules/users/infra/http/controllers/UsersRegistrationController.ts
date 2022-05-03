@@ -6,12 +6,13 @@ import { container } from 'tsyringe';
 
 export default class UsersRegistrationController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { user_id, registrationToken, enabled } = request.body;
+    const { user_id, device_id, registrationToken, enabled } = request.body;
 
     const createUserRegistrationService: CreateUserRegistrationService = container.resolve(CreateUserRegistrationService);
 
     const user = await createUserRegistrationService.execute({
       user_id,
+      device_id,
       registrationToken,
       enabled
     });
