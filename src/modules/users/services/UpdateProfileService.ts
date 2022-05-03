@@ -56,7 +56,7 @@ class UpdateProfileService {
       );
 
       if (!checkOldPassword) {
-        throw new AppError('Old password does not macth');
+        throw new AppError('Old password does not match');
       }
 
       user.password = await this.hashProvider.generateHash(password);

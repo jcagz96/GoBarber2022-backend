@@ -9,11 +9,12 @@ import { errors } from 'celebrate';
 import rateLimiter from './middlewares/RateLimiter';
 import httpRequestLogger from './middlewares/httpMiddleware';
 import Logger from './../logger';
-import admin from 'firebase-admin';
-import firebaseServiceAccount from '../../../../src/config/google-services.json';
+//import admin from 'firebase-admin';
+//import firebaseServiceAccount from '../../../../src/config/google-services.json';
 
 import '@shared/infra/typeorm';
 import '@shared/container';
+import { firebase } from '@config/firebase';
 
 import AppError from '../../errors/AppError';
 
@@ -34,7 +35,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     });
   }
 
-  console.error(err);
+  Logger.error("Internal server error. Status=500");
 
   return response
     .status(500)
@@ -42,38 +43,5 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
 });
 
 app.listen(3333, () => {
-  console.log('Server started on port 3333');
   Logger.info("Server started on port 3333");
-
-
-
-  /*   admin.initializeApp({
-      credential: admin.credential.cert({
-        clientEmail: firebaseServiceAccount.client_email,
-        privateKey: firebaseServiceAccount.private_key,
-        projectId: firebaseServiceAccount.project_id
-      }),
-    });
-
-    admin.messaging().sendToDevice(
-      "dPcBxXf0QtmjIi7ri4ctqO:APA91bG4A9aUFt0P3HPNHff5XXM5aEH9v3icaRnncIYqlhKKDmguq7O8dSzevvrzOtX4ifYmXyyCJCzPGASZzE5YHTgwwpAydApmFosSbmMBuGBqGD1_m9di-3t1lcbxHCKYhsppGjOG",
-      {
-        notification: {
-          title: "teste",
-          body: "teste notificação nodejs"
-        }
-      })
-      .then(response => {
-
-        console.log("Notification sent successfully")
-
-      })
-      .catch(error => {
-        console.log(error);
-      }); */
-
-  /* Logger.error("This is an error log");
-  Logger.warn("This is a warn log");
-  Logger.http("This is a http log");
-  Logger.debug("This is a debug log"); */
 });
