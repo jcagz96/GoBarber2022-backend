@@ -27,8 +27,8 @@ class UserRegistrationTokenRepository implements IUserRegistrationTokensReposito
     return userRegistrationToken;
   }
 
-  public async findByUserId(user_id: string): Promise<UserRegistrationToken | undefined> {
-    const userRegistrationToken = await this.ormRepository.findOne({ where: { user_id } });
+  public async findByUserId(user_id: string): Promise<UserRegistrationToken[] | undefined> {
+    const userRegistrationToken = await this.ormRepository.find({ where: { user_id } });
     return userRegistrationToken;
   }
 

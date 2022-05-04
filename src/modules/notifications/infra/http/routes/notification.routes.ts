@@ -16,4 +16,13 @@ notificationRouter.post('/push-notification/:user_id', celebrate({
   }
 }), notificationController.create);
 
+notificationRouter.post('/push-notification/:user_id/switch', celebrate({
+  [Segments.PARAMS]: {
+    user_id: Joi.string().uuid().required()
+  },
+  [Segments.BODY]: {
+    enabled: Joi.boolean().required(),
+  }
+}), notificationController.enableDisableNotifications);
+
 export default notificationRouter;

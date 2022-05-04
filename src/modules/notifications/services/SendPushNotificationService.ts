@@ -20,15 +20,7 @@ interface IRequest {
 @injectable()
 class SendPushNotificationService {
 
-  /*   private firebase: admin.app.App = admin.initializeApp({
-      credential: admin.credential.cert({
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/gm, "\n"),
-        projectId: process.env.FIREBASE_PROJECT_ID
-      }),
-    }, String(Date.now())); */
-
-  private firebase = firebase;
+  private firebase: admin.app.App = firebase;
 
   constructor(
     @inject('UserRegistrationTokenRepository')
@@ -42,31 +34,70 @@ class SendPushNotificationService {
     message
   }: IRequest): Promise<void> {
 
-    const token = await this.userRegistrationTokenRepository.findByUserId(user_id);
+    const tokens = await this.userRegistrationTokenRepository.findByUserId(user_id);
 
-    if (token) {
+    if (tokens) {
+      tokens.map((token) => {
+        if (token.enabled) {
+          this.firebase.messaging().sendToDevice(
+            token.registrationToken,
+            {
+              notification: {
+                title,
+                body: message,
 
-      this.firebase.messaging().sendToDevice(
-        token.registrationToken,
-        {
-          notification: {
-            title,
-            body: message,
-
-          }
-          ,
-        })
-        .then(response => {
-          Logger.info(`Notification sent successfully to user_id: ${user_id}`);
-        })
-        .catch(error => {
-          Logger.error(`Error sending notification to user_id: ${user_id}`);
-          throw new AppError('Error sending notification');
-        });
+              }
+              ,
+            })
+            .then(response => {
+              Logger.info(`Notification sent successfully to user_id: ${user_id}, device_id ${token.device_id}`);
+            })
+            .catch(error => {
+              Logger.error(`Error sending notification to user_id: ${user_id}, device_id ${token.device_id}`);
+            });
+        }
+        else {
+          Logger.info(`User: ${user_id} had disabled notifications`);
+        }
+      });
+    }
+    else {
+      throw new AppError('Error sending notification. This user does not have push notifications registration tokens');
     }
 
 
 
+
+    /* if (token) {
+      if (token[0]) {
+        if (token[0].enabled) {
+          this.firebase.messaging().sendToDevice(
+            token[0].registrationToken,
+            {
+              notification: {
+                title,
+                body: message,
+
+              }
+              ,
+            })
+            .then(response => {
+              Logger.info(`Notification sent successfully to user_id: ${user_id}`);
+            })
+            .catch(error => {
+              Logger.error(`Error sending notification to user_id: ${user_id}`);
+              throw new AppError('Error sending notification');
+            });
+        }
+        else {
+          Logger.error(`User: ${user_id} had disabled notifications`);
+          throw new AppError('Error sending notification. User had disabled notifications');
+        }
+      }
+      else {
+        throw new AppError('Error sending notification. This user does not have push notifications registration token');
+      }
+    } */
 
   }
 }
