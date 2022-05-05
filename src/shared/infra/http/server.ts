@@ -9,16 +9,14 @@ import { errors } from 'celebrate';
 import rateLimiter from './middlewares/RateLimiter';
 import httpRequestLogger from './middlewares/httpMiddleware';
 import Logger from './../logger';
-//import admin from 'firebase-admin';
-//import firebaseServiceAccount from '../../../../src/config/google-services.json';
-
+import http from 'http';
 import '@shared/infra/typeorm';
 import '@shared/container';
-import { firebase } from '@config/firebase';
-
+import { Server } from 'socket.io';
 import AppError from '../../errors/AppError';
+import { serverHttp, app } from './http';
+import './websocket';
 
-const app = express();
 
 app.use([rateLimiter, httpRequestLogger]);
 app.use(cors());
@@ -42,6 +40,6 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     .json({ status: 'error', message: 'Internal server error' });
 });
 
-app.listen(3333, () => {
+serverHttp.listen(3333, () => {
   Logger.info("Server started on port 3333");
 });
