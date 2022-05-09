@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity('user_sockets')
-class UserSocketsToken {
+class UserSockets {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -27,4 +27,4 @@ class UserSocketsToken {
   updated_at: Date;
 }
 
-export default UserSocketsToken;
+export default UserSockets;

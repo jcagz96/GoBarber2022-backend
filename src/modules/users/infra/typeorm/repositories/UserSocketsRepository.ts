@@ -21,12 +21,16 @@ class UserSocketsRepository implements IUserSocketsRepository {
     return userSocket;
   }
 
-  public async delete(user_id: string, socket_id: string, platform: string): Promise<void> {
+  public async delete(socket_id: string): Promise<void> {
     const userSocket = await this.ormRepository.delete({
-      user_id,
       socket_id,
-      platform
     });
+  }
+
+  public async findByUserIdAndPlatform(user_id: string, platform: string): Promise<UserSocket[]> {
+    const userSockets = await this.ormRepository.find({ where: { user_id, platform } });
+
+    return userSockets;
   }
 
 }

@@ -1,4 +1,4 @@
-import { container } from 'tsyringe';
+import { container, delay } from 'tsyringe';
 
 import '@modules/users/providers/HashProvider';
 import '@shared/container/providers';
@@ -18,6 +18,9 @@ import NotificationsRepository from '@modules/notifications/infra/typeorm/reposi
 import UserRegistrationTokenRepository from '@modules/users/infra/typeorm/repositories/UserRegistrationTokenRepository';
 import IUserRegistrationTokensRepository from '@modules/users/repositories/IUserRegistrationTokensRepository';
 
+import UserSocketsRepository from '@modules/users/infra/typeorm/repositories/UserSocketsRepository';
+import IUserSocketsRepository from '@modules/users/repositories/IUserSocketsRepository';
+
 container.registerSingleton<IAppointmentsRepository>('AppointmentsRepository', AppointmentsRepository);
 
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);
@@ -27,6 +30,8 @@ container.registerSingleton<IUserTokensRepository>('UserTokensRepository', UserT
 container.registerSingleton<INotificationsRepository>('NotificationsRepository', NotificationsRepository);
 
 container.registerSingleton<IUserRegistrationTokensRepository>('UserRegistrationTokenRepository', UserRegistrationTokenRepository);
+
+container.registerSingleton<IUserSocketsRepository>('UserSocketsRepository', delay(() => UserSocketsRepository));
 
 
 
