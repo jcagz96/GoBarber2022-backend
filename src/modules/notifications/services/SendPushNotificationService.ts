@@ -6,7 +6,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 import { instanceToPlain } from 'class-transformer';
 import admin from 'firebase-admin';
 import 'dotenv/config';
-import UserRegistrationTokenRepository from '@modules/users/infra/typeorm/repositories/UserRegistrationTokenRepository';
+import IUserRegistrationTokensRepository from '@modules/users/repositories/IUserRegistrationTokensRepository';
 import { firebase } from '@config/firebase';
 import Logger from '../../../shared/infra/logger';
 
@@ -24,7 +24,7 @@ class SendPushNotificationService {
 
   constructor(
     @inject('UserRegistrationTokenRepository')
-    private userRegistrationTokenRepository: UserRegistrationTokenRepository,
+    private userRegistrationTokenRepository: IUserRegistrationTokensRepository,
 
   ) { }
 

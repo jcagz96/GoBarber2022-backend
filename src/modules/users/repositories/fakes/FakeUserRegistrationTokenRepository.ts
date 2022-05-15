@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 class FakeUserRegistrationTokenRepository implements IUserRegistrationTokensRepository {
 
-  private userRegistrationTokens: UserRegistrationToken[] = [];
+  public userRegistrationTokens: UserRegistrationToken[] = [];
 
   public async create(user_id: string, device_id: string, registrationToken: string, enabled: boolean): Promise<UserRegistrationToken> {
     const userRegistrationToken: UserRegistrationToken = {

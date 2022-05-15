@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import 'dotenv/config';
-import UserRegistrationTokenRepository from '@modules/users/infra/typeorm/repositories/UserRegistrationTokenRepository';
+import IUserRegistrationTokensRepository from '@modules/users/repositories/IUserRegistrationTokensRepository';
 
 
 interface IRequest {
@@ -13,7 +13,7 @@ class EnableDisablePushNotificationService {
 
   constructor(
     @inject('UserRegistrationTokenRepository')
-    private userRegistrationTokenRepository: UserRegistrationTokenRepository,
+    private userRegistrationTokenRepository: IUserRegistrationTokensRepository,
 
   ) { }
 
